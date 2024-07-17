@@ -2,21 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
-public class MainPage extends JFrame {
+public class MainPage extends Base {
 
     public MainPage() {
         // Set up the frame
         setTitle("Main Page");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Set the frame to fullscreen
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setUndecorated(false);
 
         // Create a main panel with BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -25,9 +16,8 @@ public class MainPage extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
-        // Load and resize images
-        ImageIcon mapIcon = resizeImageIcon("Img/Map.png", 50, 50);
-        ImageIcon statusIcon = resizeImageIcon("Img/Status.png", 50, 50);
+        // Icon changed for the main frame
+        setIconImage(GUIicon.getImage());
 
         // Create two buttons with resized icons
         JButton button1 = new JButton("Mapping", mapIcon);
@@ -51,7 +41,6 @@ public class MainPage extends JFrame {
         button1.setAlignmentX(Component.CENTER_ALIGNMENT);
         button2.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
         // Set icon to the right of the text
         button1.setHorizontalTextPosition(SwingConstants.LEFT);
         button2.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -60,11 +49,16 @@ public class MainPage extends JFrame {
         button1.setIconTextGap(135);
         button2.setIconTextGap(80);
 
+        // Add mouse listener to change button color on hover
+        addHoverEffect(button1, Color.LIGHT_GRAY, Color.WHITE);
+        addHoverEffect(button2, Color.LIGHT_GRAY, Color.WHITE);
+
         // Add action listeners to handle button clicks
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Mapping button clicked");
+                new MappingPage();
+                setVisible(false);
             }
         });
 
@@ -90,28 +84,6 @@ public class MainPage extends JFrame {
 
         // Make the frame visible
         setVisible(true);
-    }
-
-    // Image resizing method
-    private ImageIcon resizeImageIcon(String path, int width, int height) {
-        try {
-            BufferedImage originalImage = ImageIO.read(new File(path));
-            int newWidth, newHeight;
-
-            if (originalImage.getWidth() > originalImage.getHeight()) {
-                newWidth = width;
-                newHeight = (originalImage.getHeight() * newWidth) / originalImage.getWidth();
-            } else {
-                newHeight = height;
-                newWidth = (originalImage.getWidth() * newHeight) / originalImage.getHeight();
-            }
-
-            Image resizedImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-            return new ImageIcon(resizedImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public static void main(String[] args) {
