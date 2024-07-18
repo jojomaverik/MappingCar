@@ -1,5 +1,5 @@
-#define echoPin 13 // Ultrasonic sensor 
-#define trigPin 12 // Ultrasonic sensor
+#define echoPin 12 // Ultrasonic sensor 
+#define trigPin 11 // Ultrasonic sensor
 #define MotorR1 7 // IN1 on L298N
 #define MotorR2 6 // IN2 on L298N
 #define MotorRenable 9  // enA on L298N
@@ -8,7 +8,6 @@
 #define MotorLenable 10 // enB on L298N
 
 long distance, time;
-bool hasMovedBackward = false; // flag
 
 void setup() {
   pinMode(echoPin, INPUT);
@@ -20,7 +19,7 @@ void setup() {
   pinMode(MotorR1, OUTPUT);
   pinMode(MotorR2, OUTPUT);
   pinMode(MotorRenable, OUTPUT);
-
+  
   Serial.begin(9600);
 }
 
@@ -38,45 +37,49 @@ void loop() {
   Serial.print("Distance: ");
   Serial.println(distance);
 
- if (distance < 15) {
-    if(!hasMovedBackward){
+  if (distance < 15) {
     moveBackward();
-    delay(150);
-    hasMovedBackward = true;
-    }
-    turnRight();
-    delay(500);
-    moveForward();
     delay(1000);
-    turnLeft();
-    delay(500);
+    turnRight();
+    delay(800);
   }
   else {
-    hasMovedBackward = false;
     moveForward();
-  }
+  } 
 }
 
 void moveForward() {
   digitalWrite(MotorR1, HIGH);
   digitalWrite(MotorR2, LOW);
-  analogWrite(MotorRenable, 100);
+  analogWrite(MotorRenable, 115);
 
   digitalWrite(MotorL1, HIGH);
   digitalWrite(MotorL2, LOW);
   analogWrite(MotorLenable, 100);
 }
-
-void turnRight() {
+/*
+void stop() {
   digitalWrite(MotorR1, HIGH);
   digitalWrite(MotorR2, LOW);
   analogWrite(MotorRenable, 0);
 
   digitalWrite(MotorL1, HIGH);
   digitalWrite(MotorL2, LOW);
+  analogWrite(MotorLenable, 0);
+
+  delay(4000);
+}*/
+
+void turnRight() {
+  digitalWrite(MotorR1, LOW);
+  digitalWrite(MotorR2, HIGH);
+  analogWrite(MotorRenable, 100);
+
+  digitalWrite(MotorL1, HIGH);
+  digitalWrite(MotorL2, LOW);
   analogWrite(MotorLenable, 100);
 }
-
+/*
 void turnLeft() {
   digitalWrite(MotorR1, HIGH);
   digitalWrite(MotorR2, LOW);
@@ -85,7 +88,7 @@ void turnLeft() {
   digitalWrite(MotorL1, HIGH);
   digitalWrite(MotorL2, LOW);
   analogWrite(MotorLenable, 0);
-}
+} */
 
 void moveBackward() {
   digitalWrite(MotorR1, LOW);

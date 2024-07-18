@@ -21,9 +21,9 @@ public class OperationPage extends Base {
         setIconImage(GUIicon.getImage());
 
         // Create the text area for status updates
-        statusTextArea = new JTextArea(10, 30); // Use the class-level statusTextArea
-        statusTextArea.setEditable(false); // Make it read-only
-        JScrollPane scrollPane = new JScrollPane(statusTextArea); // Add scroll functionality
+        statusTextArea = new JTextArea(10, 30);
+        statusTextArea.setEditable(false); 
+        JScrollPane scrollPane = new JScrollPane(statusTextArea); 
 
         // Add the back button
         JButton backButton = createBackButton();
