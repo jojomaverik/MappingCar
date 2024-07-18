@@ -38,19 +38,22 @@ void loop() {
   Serial.print("Distance: ");
   Serial.println(distance);
 
-  if (distance < 15) {
-    Serial.println("Obstacle detected, taking action");
-    if (!hasMovedBackward) {
-      moveBackward();
-      delay(500); // Move backward for 150 milliseconds
-      hasMovedBackward = true; // Set the flag to indicate backward movement has been done
+ if (distance < 15) {
+    if(!hasMovedBackward){
+    moveBackward();
+    delay(150);
+    hasMovedBackward = true;
     }
     turnRight();
-    delay(1000); // Turn right for 500 milliseconds
-  } else {
-    Serial.println("No obstacle, moving forward");
-    moveForward(); // Continue moving forward
-    hasMovedBackward = false; // Reset the flag when moving forward
+    delay(500);
+    moveForward();
+    delay(1000);
+    turnLeft();
+    delay(500);
+  }
+  else {
+    hasMovedBackward = false;
+    moveForward();
   }
 }
 

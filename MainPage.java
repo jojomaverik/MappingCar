@@ -1,7 +1,6 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public class MainPage extends Base {
 
@@ -54,19 +53,15 @@ public class MainPage extends Base {
         addHoverEffect(button2, Color.LIGHT_GRAY, Color.WHITE);
 
         // Add action listeners to handle button clicks
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new MappingPage();
-                setVisible(false);
-            }
+        button1.addActionListener((ActionEvent e) -> {
+            new MappingPage();
+            setVisible(false);
         });
 
-        button2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Operation Status button clicked");
-            }
+        button2.addActionListener((ActionEvent e) -> {
+            new OperationPage();
+            setVisible(false);
+            OperationPage.updateStatus("TEST111");
         });
 
         // Add buttons to the button panel with some spacing
@@ -88,11 +83,8 @@ public class MainPage extends Base {
 
     public static void main(String[] args) {
         // Run the GUI code on the Event Dispatch Thread (EDT)
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MainPage();
-            }
+        SwingUtilities.invokeLater(() -> {
+            new MainPage();
         });
     }
 }

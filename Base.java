@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -6,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 
 public class Base extends JFrame {
 
@@ -19,6 +21,18 @@ public class Base extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(false);
+    }
+
+    // Back button method
+    protected JButton createBackButton() {
+        JButton backButton = new JButton("Back");
+        backButton.setPreferredSize(new Dimension(330, 60));
+        backButton.setMinimumSize(new Dimension(330, 60));
+        backButton.addActionListener((ActionEvent e) -> {
+            new MainPage();
+            setVisible(false);
+        });
+        return backButton;
     }
 
     // Background color changer method for buttons
