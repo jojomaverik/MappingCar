@@ -20,11 +20,12 @@ public class VisualizationPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g); // Ensure the parent class's method is called
         Graphics2D g2d = (Graphics2D) g; 
         g2d.setColor(Color.WHITE); 
 
         for (Point point : points) {
-            g2d.fillOval(point.x, point.y, 1, 1); 
+            g2d.fillOval(point.x, point.y, 5, 5); 
         }
     }
 }

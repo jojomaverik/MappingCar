@@ -3,7 +3,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.*;
 
 public class MainPage extends Base {
-
+    
     public MainPage() {
         // Set up the frame
         setTitle("Main Page");
@@ -61,7 +61,6 @@ public class MainPage extends Base {
         button2.addActionListener((ActionEvent e) -> {
             new OperationPage();
             setVisible(false);
-            OperationPage.updateStatus("TEST111");
         });
 
         // Add buttons to the button panel with some spacing

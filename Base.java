@@ -29,6 +29,7 @@ public class Base extends JFrame {
         backButton.setPreferredSize(new Dimension(330, 60));
         backButton.setMinimumSize(new Dimension(330, 60));
         backButton.addActionListener((ActionEvent e) -> {
+            //noinspection InstantiationOfUtilityClass
             new MainPage();
             setVisible(false);
         });

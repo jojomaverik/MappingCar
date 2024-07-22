@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class OperationPage extends Base {
 
-    private static List<String> statusMessages = new ArrayList<>();
+    private static final List<String> statusMessages = new ArrayList<>();
     private static JTextArea statusTextArea;
 
     public OperationPage() {

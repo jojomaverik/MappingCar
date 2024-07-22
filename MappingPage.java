@@ -21,11 +21,9 @@ public class MappingPage extends Base {
 
         // Create a panel to create a visualization of the indoor
         panel = new VisualizationPanel();
-
         panel.setPreferredSize(new Dimension(600, 600));
         panel.setMinimumSize(new Dimension(600, 600));
         panel.setBackground(Color.BLACK);
-        panel.add(new JLabel("This is the Mapping Frame"));
                 
         // Add a border to the visualization panel
         Border lineBorder = BorderFactory.createLineBorder(Color.GRAY, 5); 
