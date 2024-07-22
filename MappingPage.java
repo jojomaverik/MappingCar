@@ -4,6 +4,8 @@ import javax.swing.border.Border;
 
 public class MappingPage extends Base {
 
+    VisualizationPanel panel;
+
     public MappingPage() {
         // Set up the frame
         setTitle("Mapping");
@@ -18,15 +20,16 @@ public class MappingPage extends Base {
         setIconImage(GUIicon.getImage());
 
         // Create a panel to create a visualization of the indoor
-        JPanel visualizationPanel = new JPanel();
-        visualizationPanel.setPreferredSize(new Dimension(600, 600));
-        visualizationPanel.setMinimumSize(new Dimension(600, 600));
-        visualizationPanel.setBackground(Color.BLACK);
-        visualizationPanel.add(new JLabel("This is the Mapping Frame"));
+        panel = new VisualizationPanel();
+
+        panel.setPreferredSize(new Dimension(600, 600));
+        panel.setMinimumSize(new Dimension(600, 600));
+        panel.setBackground(Color.BLACK);
+        panel.add(new JLabel("This is the Mapping Frame"));
                 
         // Add a border to the visualization panel
         Border lineBorder = BorderFactory.createLineBorder(Color.GRAY, 5); 
-        visualizationPanel.setBorder(lineBorder);
+        panel.setBorder(lineBorder);
 
         // Create a wrapper panel with GridBagLayout to center the visualization panel
         JPanel wrapperPanel = new JPanel(new GridBagLayout());
@@ -38,7 +41,7 @@ public class MappingPage extends Base {
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         gbc.anchor = GridBagConstraints.CENTER;
-        wrapperPanel.add(visualizationPanel, gbc);
+        wrapperPanel.add(panel, gbc);
 
         // Add the wrapper panel to the mapping panel
         mappingPanel.add(Box.createVerticalGlue());
