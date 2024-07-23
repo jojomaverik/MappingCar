@@ -1,10 +1,13 @@
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.*;
 import javax.swing.border.Border;
 
 public class MappingPage extends Base {
 
     VisualizationPanel panel;
+    Timer timer;
 
     public MappingPage() {
         // Set up the frame
@@ -24,9 +27,6 @@ public class MappingPage extends Base {
         panel.setPreferredSize(new Dimension(600, 600));
         panel.setMinimumSize(new Dimension(600, 600));
         panel.setBackground(Color.BLACK);
-        for (int i = 0; i < 10; i++) {
-            panel.addPoint((int) (Math.random() * 600), (int) (Math.random() * 600));            
-        }
                 
         // Add a border to the visualization panel
         Border lineBorder = BorderFactory.createLineBorder(Color.GRAY, 5); 
@@ -56,8 +56,31 @@ public class MappingPage extends Base {
         // Add the panel to the frame
         add(mappingPanel);
 
+        // Start simulating data generation
+        simulateDataGeneration();
+
         // Make the frame visible
         setVisible(true);
     }
 
+    private void simulateDataGeneration() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                // Generate random data for testing
+                int x = (int) (Math.random() * 600);
+                int y = (int) (Math.random() * 600);
+                panel.addPoint(x, y);
+            }
+        }, 0, 1000); 
+    }
+
+    @Override
+    public void dispose() {
+        if (timer != null) {
+            timer.cancel();
+        }
+        super.dispose();
+    }
 }
