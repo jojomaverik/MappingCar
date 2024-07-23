@@ -1,5 +1,5 @@
-#define echoPin 13 // Ultrasonic sensor 
-#define trigPin 12 // Ultrasonic sensor
+#define echoPin 12 // Ultrasonic sensor 
+#define trigPin 11 // Ultrasonic sensor
 #define MotorR1 7 // IN1 on L298N
 #define MotorR2 6 // IN2 on L298N
 #define MotorRenable 9  // enA on L298N
@@ -8,7 +8,11 @@
 #define MotorLenable 10 // enB on L298N
 
 long distance, time;
-bool hasMovedBackward = false; // flag
+unsigned long previousMillis = 0; // To manage non-blocking delays
+const long interval = 200; // Time interval for distance checking
+
+int xPos = 0;
+int yPos = 0;
 
 void setup() {
   pinMode(echoPin, INPUT);
@@ -25,36 +29,41 @@ void setup() {
 }
 
 void loop() {
-  digitalWrite(trigPin, LOW); //sensor set to pasive
-  delayMicroseconds(5);
-  digitalWrite(trigPin, HIGH); //sensor set to active
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW); //sensor set to pasive
+  unsigned long currentMillis = millis();
 
-  //d=v*t
-  time = pulseIn(echoPin, HIGH);
-  distance = (time / 2)*0.0343; //speed of sound in air 0.0343 cm/μs
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
 
-  Serial.print("Distance: ");
-  Serial.println(distance);
+    distance = measureDistance();
+    Serial.print("Distance: ");
+    Serial.println(distance);
 
- if (distance < 15) {
-    if(!hasMovedBackward){
-    moveBackward();
-    delay(150);
-    hasMovedBackward = true;
+    if (distance < 15) {
+      Serial.print("Obstacle at: ");
+      Serial.print(xPos);
+      Serial.print(",");
+      Serial.println(yPos);
+      
+      moveBackward();
+      delay(1000);
+      turnRight();
+      delay(1000);
+    } else {
+      moveForward();
+      stopMotors();
     }
-    turnRight();
-    delay(500);
-    moveForward();
-    delay(1000);
-    turnLeft();
-    delay(500);
   }
-  else {
-    hasMovedBackward = false;
-    moveForward();
-  }
+}
+
+long measureDistance() {
+  digitalWrite(trigPin, LOW); 
+  delayMicroseconds(5);
+  digitalWrite(trigPin, HIGH); 
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW); 
+
+  time = pulseIn(echoPin, HIGH);
+  return (time / 2) * 0.0343; // Speed of sound in air 0.0343 cm/μs
 }
 
 void moveForward() {
@@ -65,6 +74,21 @@ void moveForward() {
   digitalWrite(MotorL1, HIGH);
   digitalWrite(MotorL2, LOW);
   analogWrite(MotorLenable, 100);
+  delay(1000);
+
+  yPos += 1;
+}
+
+void stopMotors() {
+  digitalWrite(MotorR1, LOW);
+  digitalWrite(MotorR2, LOW);
+  analogWrite(MotorRenable, 0);
+
+  digitalWrite(MotorL1, LOW);
+  digitalWrite(MotorL2, LOW);
+  analogWrite(MotorLenable, 0);
+
+  delay(100);
 }
 
 void turnRight() {
@@ -75,6 +99,8 @@ void turnRight() {
   digitalWrite(MotorL1, HIGH);
   digitalWrite(MotorL2, LOW);
   analogWrite(MotorLenable, 100);
+
+  xPos += 1;
 }
 
 void turnLeft() {
@@ -85,6 +111,8 @@ void turnLeft() {
   digitalWrite(MotorL1, HIGH);
   digitalWrite(MotorL2, LOW);
   analogWrite(MotorLenable, 0);
+
+  xPos -= 1;
 }
 
 void moveBackward() {
@@ -95,5 +123,6 @@ void moveBackward() {
   digitalWrite(MotorL1, LOW);
   digitalWrite(MotorL2, HIGH);
   analogWrite(MotorLenable, 100);
-}
 
+  yPos -= 1;
+}

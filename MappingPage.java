@@ -1,13 +1,18 @@
+import com.fazecast.jSerialComm.SerialPort;
 import java.awt.*;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.border.Border;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MappingPage extends Base {
-
     VisualizationPanel panel;
     Timer timer;
+    SerialPort comPort;
+    BufferedReader input;
 
     public MappingPage() {
         // Set up the frame
@@ -27,9 +32,9 @@ public class MappingPage extends Base {
         panel.setPreferredSize(new Dimension(600, 600));
         panel.setMinimumSize(new Dimension(600, 600));
         panel.setBackground(Color.BLACK);
-                
+
         // Add a border to the visualization panel
-        Border lineBorder = BorderFactory.createLineBorder(Color.GRAY, 5); 
+        Border lineBorder = BorderFactory.createLineBorder(Color.GRAY, 5);
         panel.setBorder(lineBorder);
 
         // Create a wrapper panel with GridBagLayout to center the visualization panel
@@ -56,11 +61,41 @@ public class MappingPage extends Base {
         // Add the panel to the frame
         add(mappingPanel);
 
-        // Start simulating data generation
-        simulateDataGeneration();
-
         // Make the frame visible
         setVisible(true);
+
+        // Testing paint
+        simulateDataGeneration();
+
+        // Set up serial communication
+        setupSerial();
+    }
+
+    private void setupSerial() {
+        comPort = SerialPort.getCommPorts()[0]; // Select the first available COM port
+        comPort.setBaudRate(9600);
+        comPort.openPort();
+        input = new BufferedReader(new InputStreamReader(comPort.getInputStream()));
+
+        // Start a new thread to read data from the serial port
+        new Thread(() -> {
+            while (true) {
+                try {
+                    if (input.ready()) {
+                        String line = input.readLine();
+                        System.out.println("Received: " + line);
+                        if (line.startsWith("Obstacle at: ")) {
+                            String[] parts = line.substring(13).split(",");
+                            int x = Integer.parseInt(parts[0].trim());
+                            int y = Integer.parseInt(parts[1].trim());
+                            SwingUtilities.invokeLater(() -> panel.addPoint(x, y));
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private void simulateDataGeneration() {
@@ -73,7 +108,7 @@ public class MappingPage extends Base {
                 int y = (int) (Math.random() * 600);
                 panel.addPoint(x, y);
             }
-        }, 0, 1000); 
+        }, 0, 1000); // Add a point every second
     }
 
     @Override
@@ -84,3 +119,5 @@ public class MappingPage extends Base {
         super.dispose();
     }
 }
+
+
