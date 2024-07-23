@@ -54,11 +54,13 @@ public class MainPage extends Base {
 
         // Add action listeners to handle button clicks
         button1.addActionListener((ActionEvent e) -> {
+            System.out.println("Mapping button clicked");
             new MappingPage();
             setVisible(false);
         });
 
         button2.addActionListener((ActionEvent e) -> {
+            System.out.println("Operation Status button clicked");
             new OperationPage();
             setVisible(false);
         });

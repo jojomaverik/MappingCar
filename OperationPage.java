@@ -39,6 +39,9 @@ public class OperationPage extends Base {
         // Add the panel to the frame
         add(operationPanel);
 
+        // Load existing messages
+        loadStatusMessages();
+
         // Make the frame visible
         setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the frame to full screen
         setVisible(true);

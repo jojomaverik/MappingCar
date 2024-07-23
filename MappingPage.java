@@ -24,6 +24,9 @@ public class MappingPage extends Base {
         panel.setPreferredSize(new Dimension(600, 600));
         panel.setMinimumSize(new Dimension(600, 600));
         panel.setBackground(Color.BLACK);
+        for (int i = 0; i < 10; i++) {
+            panel.addPoint((int) (Math.random() * 600), (int) (Math.random() * 600));            
+        }
                 
         // Add a border to the visualization panel
         Border lineBorder = BorderFactory.createLineBorder(Color.GRAY, 5); 
@@ -56,4 +59,5 @@ public class MappingPage extends Base {
         // Make the frame visible
         setVisible(true);
     }
+
 }
